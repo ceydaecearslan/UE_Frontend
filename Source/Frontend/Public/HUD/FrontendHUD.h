@@ -3,10 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonInputModeTypes.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/HUD.h"
 #include "FrontendHUD.generated.h"
 
+class UAsyncActionPushSoftWidget;
+class UCommonActivatableWidgetBase;
+class UMVVMViewModelBase;
+class UMVVMPressAnyKey;
 class UPrimaryLayout;
 /**
  * 
@@ -18,16 +22,23 @@ class FRONTEND_API AFrontendHUD : public AHUD
 
 public:
 
+	AFrontendHUD();
+	
 	void InitializeHud();
+
+	UFUNCTION()
+	void OnPressAnyKeyWidgetCreated(UCommonActivatableWidgetBase* PushedWidget);
 
 protected:
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void ShowPressAnyKeyWidget();
+	UAsyncActionPushSoftWidget* NewPushSoftWidgetAsyncAction(
+		FName InSoftClassTag,
+		FName InWidgetStackTag,
+		bool bFocusOnNewlyPushedWidget);
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UPrimaryLayout> PrimaryLayoutClass;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TSoftClassPtr<UUserWidget> PressAnyKeyWidgetClass;
+
+	TMap<FName, FGameplayTag> FrontendWidgetStackTags;
+	TMap<FName, FGameplayTag> FrontendWidgetSoftClassTags;
 };

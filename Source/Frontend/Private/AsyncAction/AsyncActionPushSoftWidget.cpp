@@ -56,6 +56,7 @@ UAsyncActionPushSoftWidget* UAsyncActionPushSoftWidget::PushSoftWidget(UObject* 
 			Action->bCachedFocusOnNewlyPushedWidget = bFocusOnNewlyPushedWidget;
 			
 			Action->RegisterWithGameInstance(World);
+			Action->Activate();
 			return Action;
 		}
 	}
